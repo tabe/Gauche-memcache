@@ -66,11 +66,16 @@ uninstall :
 
 clean :
 	$(GAUCHE_PACKAGE) compile --clean memcache $(memcache_SRCS)
+	$(MAKE) -C doc clean
 	rm -rf core $(TARGET) $(GENERATED) *~ test.log so_locations
 
 distclean : clean
+	$(MAKE) -C doc distclean
 	rm -rf $(CONFIG_GENERATED)
 
 maintainer-clean : clean
+	$(MAKE) -C doc maintainer-clean
 	rm -rf $(CONFIG_GENERATED) configure VERSION
 
+doc : all
+	$(MAKE) -C doc

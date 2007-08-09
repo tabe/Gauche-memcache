@@ -24,16 +24,16 @@
 (test* "add" #f (add conn 'coffee #\B))
 (test* "get" '((coffee . ("blue" "mountain"))) (get conn 'abc 'coffee))
 (test* "flush-all" #t (flush-all conn))
-(define ver (version conn))
-(test* "version" #t (version<=? "1.1.11" ver))
+(define v (version conn))
+(test* "version" #t (version<=? "1.1.11" v))
 (test* "flush_all (with a numeric argument)"
-       (if (version<=? "1.1.13" ver)
+       (if (version<=? "1.1.13" v)
            #t
            *test-error*)
        (flush-all conn 30))
 (write (stats conn))
 (newline)
-(test* "quit" #t (eof-object? (quit conn)))
+(quit conn)
 
 (unless (library-exists? 'www.cgi.session)
   (test-end)

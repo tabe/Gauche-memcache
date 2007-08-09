@@ -34,6 +34,8 @@
 
 (define-module memcache
   (use gauche.net)
+  (use gauche.parameter)
+  (use gauche.uvector)
   (export <memcache-error> <memcache-client-error> <memcache-server-error>
           <memcache-connection> memcache-connect memcache-close
           set add replace get delete incr decr
@@ -65,22 +67,41 @@
 (define-method memcache-close ((connection <memcache-connection>))
   (socket-close (socket-of connection)))
 
-(define (%read-line iport . opt)
-  (let-keywords* opt ((allow-eof #f))
-    (let ((line (read-line iport)))
-      (rxmatch-case line
-        (test eof-object? (if allow-eof line (error "unexpected eof")))
-        (#/^ERROR$/
-         (#f)
-         (raise (condition (<memcache-error>))))
-        (#/^CLIENT_ERROR (.+)$/
-         (#f s)
-         (raise (condition (<memcache-client-error> (message s)))))
-        (#/^SERVER_ERROR (.+)$/
-         (#f s)
-         (raise (condition (<memcache-server-error> (message s)))))
-        (else
-         line)))))
+(define *memcache-read-line-max* (make-parameter 256))
+(define *memcache-read-retry-max* (make-parameter 3))
+(define *memcache-read-nanosecond* (make-parameter 1000))
+
+(define (%read-block-crlf! iport vec pos last retry)
+  (let ((next (read-byte iport)))
+    (cond ((eof-object? next)
+           (sys-nanosleep (*memcache-read-nanosecond*))
+           (%read-block-crlf! iport vec pos last (+ retry 1)))
+          ((and (< 0 pos)
+                (= 13 last)  ; #\cr
+                (= 10 next)) ; #\lf
+           (- pos 1))
+          ((< pos (u8vector-length vec))
+           (u8vector-set! vec pos next)
+           (%read-block-crlf! iport vec (+ pos 1) next 0))
+          (else
+           (error "%read-block-crlf! overflow")))))
+
+(define (%read-line iport)
+  (let* ((vec (make-u8vector (*memcache-read-line-max*)))
+         (len (%read-block-crlf! iport vec 0 #f 0))
+         (line (u8vector->string vec 0 len)))
+    (rxmatch-case line
+      (#/^ERROR$/
+       (#f)
+       (raise (condition (<memcache-error>))))
+      (#/^CLIENT_ERROR (.+)$/
+                       (#f s)
+                       (raise (condition (<memcache-client-error> (message s)))))
+      (#/^SERVER_ERROR (.+)$/
+                       (#f s)
+                       (raise (condition (<memcache-server-error> (message s)))))
+      (else
+       line))))
 
 (define (%reply-2 iport success not-found)
   (let ((line (%read-line iport)))
@@ -106,14 +127,28 @@
 (%define-storage-command add)
 (%define-storage-command replace)
 
-(define (%read-and-test iport reader expected)
-  (let ((x (reader iport)))
-    (cond ((eof-object? x)
-           (error "unexpected eof, instead of" expected))
-          ((procedure? expected)
-           (expected x))
-          (else
-           (equal? expected x)))))
+(define (%read iport bytes)
+  (let ((vec (make-u8vector bytes)))
+    (let lp ((pos 0)
+             (retry 0)
+             (last #f))
+      (let ((next (read-byte iport)))
+        (cond ((eof-object? next)
+               (sys-nanosleep (*memcache-read-nanosecond*))
+               (lp pos (+ retry 1) last))
+              ((< pos bytes)
+               (u8vector-set! vec pos next)
+               (lp (+ pos 1) 0 next))
+              ((= pos bytes)
+               (if (= 13 next) ; #\cr
+                   (lp (+ pos 1) 0 next)
+                   (error "#\cr expected, but" next)))
+              ((= pos (+ bytes 1))
+               (if (= 10 next) ; #\lf
+                   (read-from-string (u8vector->string vec))
+                   (error "#\lf expected, but" next)))
+              (else
+               (error "can not happen")))))))
 
 (define-method get ((conn <memcache-connection>) . keys)
   (let ((iport (slot-ref conn 'input-port))
@@ -129,9 +164,7 @@
          (reverse! result))
         (#/^VALUE (\S+) ([0-9]+) ([0-9]+)$/
          (#f key flags bytes)
-         (let ((data (read iport)))
-           (%read-and-test iport read-char #\return)
-           (%read-and-test iport read-char #\newline)
+         (let ((data (%read iport (string->number bytes))))
            (lp (%read-line iport) (acons (string->symbol key) data result))))
         (else
          (error "unexpected reply:" line))))))
@@ -206,15 +239,14 @@
 
 (define-syntax %define-simple-command
   (syntax-rules ()
-    ((_ name x)
+    ((_ name)
      (define-method name ((conn <memcache-connection>))
        (let ((iport (slot-ref conn 'input-port))
              (oport (slot-ref conn 'output-port)))
          (format oport "~a\r\n" 'name)
-         (%read-line iport :allow-eof x)
          )))))
 
-(%define-simple-command quit #t)
+(%define-simple-command quit)
 
 ;; Epilogue
 (provide "memcache")

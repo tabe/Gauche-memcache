@@ -1,0 +1,19 @@
+GENERATED = reference.en.html reference.ja.html
+
+.SUFFIXES : .scm .en.html .ja.html
+
+%.en.html : %.scm
+	gosh $< en > $@
+
+%.ja.html : %.scm
+	gosh $< ja > $@
+
+all : $(GENERATED)
+
+clean : 
+	@rm -f $(GENERATED)
+
+distclean : clean
+	@rm Makefile
+
+maintainer-clean : distclean
