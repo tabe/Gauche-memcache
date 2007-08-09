@@ -1,4 +1,5 @@
 #!/usr/bin/env gosh
+;; -*- encoding: utf-8 -*-
 
 (use file.util)
 (use fixedpoint.site)
@@ -30,37 +31,37 @@
 	 (html:p (html:dfn /Gauche-memcache/)
 			 (en/ja
               (list " is an extension package of " /Gauche/ " providing " /memcached/ " client utility.")
-              (list " ¤Ï " /Scheme/ " ½èÍı·Ï " /Gauche/ " ¤Ç " /memcached/ " ¤Î¥¯¥é¥¤¥¢¥ó¥Èµ¡Ç½¤òÍøÍÑ¤¹¤ë¤¿¤á¤Î³ÈÄ¥¥Ñ¥Ã¥±¡¼¥¸¤Ç¤¹¡£")))
+              (list " ã¯ " /Scheme/ " å‡¦ç†ç³» " /Gauche/ " ã§ " /memcached/ " ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆæ©Ÿèƒ½ã‚’åˆ©ç”¨ã™ã‚‹ãŸã‚ã®æ‹¡å¼µãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã§ã™ã€‚")))
 
-	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "News" "ºÇ¿·¾ğÊó"))
+	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "News" "æœ€æ–°æƒ…å ±"))
 	 (html:ul
-	  (html:li "[2007-08-10] " (en/ja "Release 0.1.0." "¥Ğ¡¼¥¸¥ç¥ó 0.1.0 ¤ò¸ø³«¤·¤Ş¤·¤¿¡£")))
+	  (html:li "[2007-08-10] " (en/ja "Release 0.1.0." "ãƒãƒ¼ã‚¸ãƒ§ãƒ³ 0.1.0 ã‚’å…¬é–‹ã—ã¾ã—ãŸã€‚")))
 
-	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Features" "ÆÃÄ§"))
+	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Features" "ç‰¹å¾´"))
 	 (html:ul
 	  (html:li (en/ja "memcached client API"
-					  "memcached ¥¯¥é¥¤¥¢¥ó¥È API"))
+					  "memcached ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆ API"))
 	  (html:li (en/ja (list "memcache based CGI session with " /Gauche-cgi-ext/)
-					  (list /Gauche-cgi-ext/ " ¤Ë¤è¤ë memcached ¥Ù¡¼¥¹¤Î CGI ¥»¥Ã¥·¥ç¥ó")))
+					  (list /Gauche-cgi-ext/ " ã«ã‚ˆã‚‹ memcached ãƒ™ãƒ¼ã‚¹ã® CGI ã‚»ãƒƒã‚·ãƒ§ãƒ³")))
 	  )
 
-	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Requirements" "Æ³Æş"))
+	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Requirements" "å°å…¥"))
 	 (html:p (en/ja "This package is for Gauche 0.8.10 or later."
-					"¤³¤Î¥Ñ¥Ã¥±¡¼¥¸¤Ï Gauche 0.8.10 ¤Ş¤¿¤Ï¤½¤ì°Ê¾å¤ÇÆ°ºî¤·¤Ş¤¹¡£"))
+					"ã“ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¯ Gauche 0.8.10 ã¾ãŸã¯ãã‚Œä»¥ä¸Šã§å‹•ä½œã—ã¾ã™ã€‚"))
 	 (html:ul
 	  (html:li (en/ja (list "If you would like memcache based CGI session, "
                             /memcached/ " and also " /Gauche-memcache/ " are necessary.")
-					  (list "¤Ş¤¿ memcache ¤Ë¤è¤ë CGI ¥»¥Ã¥·¥ç¥ó¤òÍøÍÑ¤¹¤ë¾ì¹ç¤Ë¤Ï"
-                            /memcached/ " ¤ª¤è¤Ó "/Gauche-memcache/ " ¤¬É¬Í×¤Ç¤¹¡£"))))
+					  (list "ã¾ãŸ memcache ã«ã‚ˆã‚‹ CGI ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’åˆ©ç”¨ã™ã‚‹å ´åˆã«ã¯"
+                            /memcached/ " ãŠã‚ˆã³ "/Gauche-memcache/ " ãŒå¿…è¦ã§ã™ã€‚"))))
 
-	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Download" "¥À¥¦¥ó¥í¡¼¥É"))
+	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Download" "ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰"))
 	 (html:p (html:a :href *gauche-memcache-tarball-url*
 					 *gauche-memcache-tarball-basename* " (" *gauche-memcache-tarball-size*  " bytes)"))
 
-	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Documentation" "Ê¸½ñ"))
+	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Documentation" "æ–‡æ›¸"))
 	 (html:ul
 	  (html:li (html:a :href (en/ja "reference.en.html" "reference.ja.html")
-					   "Gauche-memcache " (en/ja "Reference Manual" "¥ê¥Õ¥¡¥ì¥ó¥¹¥Ş¥Ë¥å¥¢¥ë"))))
+					   "Gauche-memcache " (en/ja "Reference Manual" "ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ãƒãƒ‹ãƒ¥ã‚¢ãƒ«"))))
 
 	 (html:h2 :style "border-bottom: 1px solid #bbbbbb;" "FYI")
 	 (html:ul
