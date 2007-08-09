@@ -1,0 +1,4 @@
+DIST_EXCLUDE
+Gauche-memcache.gpd
+autom4te.cache
+gauche-memcache
