@@ -68,6 +68,6 @@ if [ "$pub" = "yes" ]; then
 	  ../$MODULE-$VERSION/doc/reference.en.html \
 	  gauche-memcache/index.html \
 	  gauche-memcache/index.en.html; do
-	cp -upf $x /home/htdocs/gauche-memcache/
+	cp -pf $x /home/htdocs/gauche-memcache/
   done
 fi
