@@ -121,11 +121,20 @@
          ("コマンド 'quit' を発行します。メソッド \"memcache-close\" も参照してください。"))
 		))
 
+(define-macro (api-session lang)
+  `(def ,lang
+		((parameter *session-memcache-host*
+                    *session-memcache-port*)
+		 ("You can specify the hostname and port number of memcached by them, respectively."
+          "As default they have value \"localhost\" and 11211.")
+		 ("これらのパラメータによって memcached のホスト名とポート番号を指定できます。"
+          "既定値はそれぞれ \"localhost\" と 11211 です。"))))
+
 (define (document-tree lang)
   (let ((title (if (eq? 'ja lang) "Gauche-memcache リファレンスマニュアル" "Gauche-memcache Reference Manual")))
 	(html:html
 	 (html:head
-	  (if (eq? 'ja lang) (html:meta :http-equiv "Content-Type" :content "text/html; charset=EUC-JP") '())
+	  (if (eq? 'ja lang) (html:meta :http-equiv "Content-Type" :content "text/html; charset=UTF-8") '())
 	  (html:title title))
 	 (html:body
 	  (html:h1 title)
@@ -161,9 +170,12 @@
           (api ja))
       (html:h2 "CGI Session with memcache")
       (if (eq? 'en lang)
-          "For documentation on CGI session with memcache, see: "
-          "Memcache による CGI セッションについては次を参照してください: ")
+          "For documentation on CGI session with Gauche-cgi-ext we assume, see: "
+          "仮定する Gauche-cgi-ext による CGI セッションについては次を参照してください: ")
       (html:a :href "http://fixedpoint.jp/gauche-cgi-ext/" "http://fixedpoint.jp/gauche-cgi-ext/")
+      (if (eq? 'en lang)
+          (api-session en)
+          (api-session ja))
 	  (html:address "&copy; 2007 Takeshi Abe")
 	  ))))
 
