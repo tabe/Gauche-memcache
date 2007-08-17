@@ -9,41 +9,56 @@
 
 (define-syntax def
   (syntax-rules (en ja procedure method)
-	((_ lang)
+	((_ en)
+     '())
+    ((_ ja)
 	 '())
-	((_ en ((type name ...) (p ...) (q ...)) rest ...)
-	 (def en ((type name ...) (p ...)) rest ...))
-	((_ ja ((type name ...) (p ...) (q ...)) rest ...)
-	 (def ja ((type name ...) (q ...)) rest ...))
-	((_ lang ((procedure (name arg ...) ...) (p ...)) rest ...)
-	 (list*
-	  (html:h3 (html:span :class "type" "procedure") ": "
-			   (html:span :class "procedure" (html-escape-string (symbol->string 'name))) " "
-			   (cons (html:span :class "argument" 'arg) " ") ...)
-	  ...
-	  (html:p (html-escape-string p))
-	  ...
-	  (html:hr)
-	  (def lang rest ...)))
-	((_ lang ((method (name arg ...) ...) (p ...)) rest ...)
-	 (list*
+	((_ en (synopsis x y z ...) rest ...)
+     (cons
+      (def (synopsis x z ...))
+      (def en rest ...)))
+	((_ ja (synopsis x y z ...) rest ...)
+     (cons
+      (def (synopsis y z ...))
+      (def ja rest ...)))
+	((_ ((procedure (name arg ...) ...) (p ...) z ...))
+     (list
+      (html:h3 (html:span :class "type" "procedure") ": "
+               (html:span :class "procedure" (html-escape-string (symbol->string 'name))) " "
+               (cons (html:span :class "argument" 'arg) " ") ...)
+      ...
+      (map
+       (lambda (x)
+         (if (string? x)
+             (html:p (html-escape-string x))
+             (html:pre (html-escape-string (list-ref '(z ...) x)))))
+       (list p ...))
+      (html:hr)))
+	((_ ((method (name arg ...) ...) (p ...) z ...))
+	 (list
 	  (html:h3 (html:span :class "type" "method") ": "
 			   (html:span :class "method" (html-escape-string (symbol->string 'name))) " "
 			   (cons (html:span :class "argument" (html-escape-string (x->string 'arg))) " ") ...)
 	  ...
-	  (html:p (html-escape-string p))
-	  ...
-	  (html:hr)
-	  (def lang rest ...)))
-	((_ lang ((type name ...) (p ...)) rest ...)
-	 (list*
+      (map
+       (lambda (x)
+         (if (string? x)
+             (html:p (html-escape-string x))
+             (html:pre (html-escape-string (list-ref '(z ...) x)))))
+       (list p ...))
+	  (html:hr)))
+	((_ ((type name ...) (p ...) z ...))
+	 (list
 	  (html:h3 (html:span :class "type" 'type) ": "
 			   (html:span :class 'type (html-escape-string (symbol->string 'name))))
 	  ...
-	  (html:p (html-escape-string p))
-	  ...
-	  (html:hr)
-	  (def lang rest ...)))))
+      (map
+       (lambda (x)
+         (if (string? x)
+             (html:p (html-escape-string x))
+             (html:pre (html-escape-string (list-ref '(z ...) x)))))
+       (list p ...))
+	  (html:hr)))))
 
 (define-macro (api lang)
   `(def ,lang
