@@ -26,11 +26,7 @@
 (test* "flush-all" #t (flush-all conn))
 (define v (version conn))
 (test* "version" #t (version<=? "1.1.11" v))
-(test* "flush_all (with a numeric argument)"
-       (if (version<=? "1.1.13" v)
-           #t
-           *test-error*)
-       (flush-all conn 30))
+(test* "flush_all (with a numeric argument)" (or (version<=? "1.1.13" v) *test-error*) (flush-all conn 30))
 (write (stats conn))
 (newline)
 (quit conn)
