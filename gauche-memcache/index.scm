@@ -10,7 +10,7 @@
  (memcached "http://www.danga.com/memcached/")
  )
 
-(define-package Gauche-memcache 2007 8 10)
+(define-package Gauche-memcache 2007 9 12)
 
 (define-index Gauche-memcache
   (html:p (html:dfn /Gauche-memcache/)
@@ -20,6 +20,12 @@
 
   (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "News" "最新情報"))
   (html:ul
+   (html:li "[2007-09-12] " (let ((url "http://practical-scheme.net/wiliki/wiliki.cgi?Gauche%3ABugs"))
+                              (en/ja (list (html:a :href url "The announced patch")
+                                           " is necessary to deal with a port buffering bug if using Gauche 0.8.11.")
+                                     (list "Gauche 0.8.11 で動作させるには、ポートバッファリングのバグを修正するため"
+                                           (html:a :href url "告知されているパッチ")
+                                           "が必要です。"))))
    (html:li "[2007-08-10] " (en/ja "Release 0.1.0." "バージョン 0.1.0 を公開しました。")))
 
   (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Features" "特徴"))
