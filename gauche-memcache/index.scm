@@ -1,5 +1,5 @@
 #!/usr/bin/env gosh
-;; -*- encoding: utf-8 -*-
+;; -*- mode: scheme; coding: utf-8 -*-
 
 (use fixedpoint.package)
 (use fixedpoint.site)
@@ -10,7 +10,7 @@
  (memcached "http://www.danga.com/memcached/")
  )
 
-(define-package Gauche-memcache 2007 9 12)
+(define-package Gauche-memcache 2007 11 1)
 
 (define-index Gauche-memcache
   (html:p (html:dfn /Gauche-memcache/)
@@ -20,6 +20,8 @@
 
   (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "News" "最新情報"))
   (html:ul
+   (html:li "[2007-11-01] " (en/ja "It is confirmed that the current version 0.1.0 runs on Gauche 0.8.12."
+                                   "Gauche 0.8.12 で現在のバージョン 0.1.0 が動作することを確認しました。"))
    (html:li "[2007-09-12] " (let ((url "http://practical-scheme.net/wiliki/wiliki.cgi?Gauche%3ABugs"))
                               (en/ja (list (html:a :href url "The announced patch")
                                            " is necessary to deal with a port buffering bug if using Gauche 0.8.11.")
