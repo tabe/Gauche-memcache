@@ -1,0 +1,29 @@
+Basic
+=====
+
+It is recommended to:
+- use Gauche 0.8.12 or later, and
+- work together with the latest version of memcached.
+
+
+Command lines
+=============
+
+$ ./configure
+$ make
+$ make install
+
+
+Destribution Specific
+=====================
+If you do not have installed memcached, then:
+
+* Debian etch
+# aptitude install memcached
+
+* Fedora 8
+# yum install memcached
+
+* FreeBSD 6.2
+# cd /usr/ports/databases/memcached
+# make install clean
