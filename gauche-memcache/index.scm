@@ -47,6 +47,9 @@
                    (list "また memcache による CGI セッションを利用する場合には"
                          /memcached/ " および "/Gauche-memcache/ " が必要です。"))))
 
+  (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "License" "ライセンス"))
+  (html:p "The BSD License")
+
   (html:h2 :style "border-bottom: 1px solid #bbbbbb;" (en/ja "Download" "ダウンロード"))
   (*package-download*)
 
