@@ -62,6 +62,7 @@
   (html:ul
    (html:li /memcached/)
    (html:li /PHP/)
+   (html:li (html:a :href "http://chicken.wiki.br/memcached" "Chicken Scheme's memcached"))
    )
   )
 
