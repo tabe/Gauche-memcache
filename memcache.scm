@@ -165,7 +165,7 @@
         (#/^VALUE (\S+) ([0-9]+) ([0-9]+)$/
          (#f key flags bytes)
          (let ((data (%read iport (string->number bytes))))
-           (lp (%read-line iport) (acons (string->symbol key) data result))))
+           (lp (%read-line iport) (acons (read-from-string key) data result))))
         (else
          (error "unexpected reply:" line))))))
 

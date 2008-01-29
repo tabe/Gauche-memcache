@@ -96,8 +96,10 @@
                  (add (conn <memcache-connection>) key value &optional opt)
                  (replace (conn <memcache-connection>) key value &optional opt))
          ("Set the value with key by command 'set'/'add'/'replace', resp."
+          "A symbol or number is avaiable as the key."
           "Return #t in case of success, or #f otherwise.")
          ("キー key および値 value を持つエントリを登録します。"
+          "キーにはシンボルもしくは数値が利用できます。"
           "成功の場合には #t を、そうでなければ #f を返します。"))
 
         ((method (get (conn <memcache-connection>) &optional keys))

@@ -13,7 +13,11 @@
 (define conn (memcache-connect "localhost" 11211))
 
 (test* "set" #t (set conn 'abc "The Black\r\nMonday"))
+(test* "set" #t (set conn #x21 "integer as key"))
+(test* "set" #t (set conn 1/3 "fraction as key"))
 (test* "get" '((abc . "The Black\r\nMonday")) (get conn 'abc))
+(test* "get" '((33 . "integer as key")) (get conn #x21))
+(test* "get" '((1/3 . "fraction as key")) (get conn 1/3))
 (test* "delete" #t (delete conn 'abc))
 (test* "get" '() (get conn 'abc))
 (test* "replace" #f (replace conn 'coffee '("blue" "mountain")))

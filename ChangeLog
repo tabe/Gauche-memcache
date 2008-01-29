@@ -1,3 +1,7 @@
+2008-01-30  Takeshi Abe  <tabe@fixedpoint.jp>
+
+	* memcache.scm (get): the tiny fix allows a number as a key.
+
 2007-11-21  Takeshi Abe  <tabe@fixedpoint.jp>
 
 	* INSTALL: added.
