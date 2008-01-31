@@ -193,7 +193,7 @@
       (if (eq? 'en lang)
           (api-session en)
           (api-session ja))
-	  (html:address "&copy; 2007 Takeshi Abe")
+	  (html:address "&copy; 2007,2008 Takeshi Abe")
 	  ))))
 
 (define (main args)
