@@ -208,7 +208,7 @@
         (#/^END$/
          (#f)
          (reverse! result))
-        (#/^STAT (\S+) (\S+)$/
+        (#/^STAT (\S+)\s+(.+)$/
          (#f name value)
          (lp (%read-line iport) (acons (string->symbol name) value result)))
         (else
@@ -231,7 +231,7 @@
     (display "version\r\n" oport)
     (let ((line (%read-line iport)))
       (rxmatch-case line
-        (#/^VERSION (\S+)$/
+        (#/^VERSION\s+(.+)$/
          (#f s)
          s)
         (else
